@@ -1,0 +1,28 @@
+{
+  "name": "hapi-oppsy",
+  "version": "0.0.1",
+  "description": "Hapi plugin for oppsy",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/firstandthird/hapi-oppsy.git"
+  },
+  "keywords": [
+    "hapi",
+    "ops",
+    "oppsy",
+    "logging"
+  ],
+  "author": "Greg Allen <code@firstandthird.com> (http://firstandthird.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/firstandthird/hapi-oppsy/issues"
+  },
+  "homepage": "https://github.com/firstandthird/hapi-oppsy#readme",
+  "dependencies": {
+    "oppsy": "1.0.2"
+  }
+}
