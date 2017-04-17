@@ -6,7 +6,7 @@ server.register({
   register: plugin,
   options: {
     interval: 5000, // log some data every 5 seconds
-    memoryThreshold: 40, // alert if memory use is above this threshold
+    memoryThreshold: 20, // alert if memory use is above this threshold
     cpuThresholds: [.5, .4, .3], // alert if 1/5/15 minute CPU averages are above their respective threshold
     failedRequestThreshold: 10 // alert if the % of requests that don't return 200 is above this threshold
   }
