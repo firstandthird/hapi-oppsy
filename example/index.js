@@ -1,6 +1,6 @@
 const Hapi = require('hapi');
 const plugin = require('../');
-const server = new Hapi.Server({ debug: { log: ['ops', 'cpu', 'requests'] } });
+const server = new Hapi.Server({ debug: { log: ['ops and cpu', 'requests'] } });
 server.connection({ port: 8080 });
 server.register({
   register: plugin,
