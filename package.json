@@ -32,6 +32,7 @@
   "devDependencies": {
     "eslint": "^3.9.1",
     "eslint-config-firstandthird": "^3.2.0",
-    "eslint-plugin-import": "^2.1.0"
+    "eslint-plugin-import": "^2.1.0",
+    "hapi": "^16.1.1"
   }
 }
