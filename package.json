@@ -1,6 +1,6 @@
 {
   "name": "hapi-oppsy",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Hapi plugin for oppsy",
   "main": "index.js",
   "scripts": {
