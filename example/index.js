@@ -3,12 +3,11 @@ const oppsyPlugin = require('../');
 const hapiLogr = require('hapi-logr');
 const logrFlat = require('logr-flat');
 
-const server = new Hapi.Server({ debug: { log: ['ops', 'threshold'] } });
+const server = new Hapi.Server({ });
 server.connection({ port: 8080 });
 server.register([
   {
     register: hapiLogr,
-    type: 'flat',
     options: {
       reporters: {
         flat: {
@@ -20,9 +19,10 @@ server.register([
   {
     register: oppsyPlugin,
     options: {
+      logCpu: 'warning',
       interval: 5000, // log some data every 5 seconds
-      memoryThreshold: 20, // alert if memory use is above this threshold
-      cpuThresholds: [.5, .4, .3], // alert if 1/5/15 minute CPU averages are above their respective threshold
+      memoryThreshold: 80, // alert if memory use is above this threshold
+      cpuThresholds: [0.5, 0.4, 0.3], // alert if 1/5/15 minute CPU averages are above their respective threshold
       failedRequestThreshold: 10 // alert if the % of requests that don't return 200 is above this threshold
     }
   }
