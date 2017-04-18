@@ -23,8 +23,6 @@
   },
   "homepage": "https://github.com/firstandthird/hapi-oppsy#readme",
   "dependencies": {
-    "logr": "^2.1.0",
-    "logr-flat": "^2.0.0",
     "oppsy": "1.0.2"
   },
   "eslintConfig": {
@@ -34,6 +32,8 @@
     "eslint": "^3.9.1",
     "eslint-config-firstandthird": "^3.2.0",
     "eslint-plugin-import": "^2.1.0",
-    "hapi": "^16.1.1"
+    "hapi": "^16.1.1",
+    "hapi-logr": "^3.0.0",
+    "logr-flat": "^2.0.0"
   }
 }
