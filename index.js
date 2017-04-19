@@ -59,6 +59,8 @@ exports.register = function(server, options, next) {
         let totalRequestsProcessed = 0;
         let totalErrorRequests = 0;
         const requestData = data.requests[port];
+        requestData.avgResponseTime = data.responseTimes[port].avg;
+        requestData.maxResponseTime = data.responseTimes[port].max;
         if (options.logRequests === 'info') {
           server.log(['ops', 'requests'], requestData);
         }
