@@ -9,6 +9,7 @@ const defaults = {
   logRequests: 'info', //info, warning
   failedRequestThreshold: 10,
   memoryThreshold: 80,
+  avgResponseTimeThreshold: 2000,
   cpuThresholds: [1.0, 1.0, 1.0] // 1, 5 and 15-minute load averages
 };
 
@@ -59,6 +60,8 @@ exports.register = function(server, options, next) {
         let totalRequestsProcessed = 0;
         let totalErrorRequests = 0;
         const requestData = data.requests[port];
+        requestData.avgResponseTime = data.responseTimes[port].avg;
+        requestData.maxResponseTime = data.responseTimes[port].max;
         if (options.logRequests === 'info') {
           server.log(['ops', 'requests'], requestData);
         }
@@ -71,6 +74,9 @@ exports.register = function(server, options, next) {
         const failedRequestPercent = ((totalErrorRequests / totalRequestsProcessed) * 100).toFixed(2);
         if (failedRequestPercent > options.failedRequestThreshold) {
           server.log(['ops', 'requests', 'threshold', 'warning'], `${failedRequestPercent}% of http requests have returned a non-200 code`);
+        }
+        if (requestData.avgResponseTime > options.avgResponseTimeThreshold) {
+          server.log(['ops', 'memory', 'warning', 'threshold'], `Average response time is ${requestData.avgResponseTime}ms. Exceeds threshold of ${options.avgResponseTimeThreshold}ms`);
         }
       }
     }

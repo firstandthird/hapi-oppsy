@@ -19,6 +19,8 @@ server.register([
   {
     register: oppsyPlugin,
     options: {
+      logRequests: 'info',
+      avgResponseTimeThreshold: 5,
       logCpu: 'warning',
       interval: 5000, // log some data every 5 seconds
       memoryThreshold: 80, // alert if memory use is above this threshold
