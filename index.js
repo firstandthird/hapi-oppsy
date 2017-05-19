@@ -56,15 +56,10 @@ exports.register = function(server, options, next) {
     if (options.logRequests) {
       // server.log request info:
       // track % of requests that were not HTTP OK:
-      if (data.requests[port] !== undefined && data.requests[port].total !== 0) {
+      if (data.requests[port] && data.requests[port].total !== 0) {
         let totalRequestsProcessed = 0;
         let totalErrorRequests = 0;
         const requestData = data.requests[port];
-        if (!requestData) {
-          server.log(['ops', 'requests', 'error'], `Unable to get request data for port ${port}`);
-        }
-        requestData.avgResponseTime = data.responseTimes[port].avg;
-        requestData.maxResponseTime = data.responseTimes[port].max;
         if (options.logRequests === 'info') {
           server.log(['ops', 'requests'], requestData);
         }
@@ -78,8 +73,14 @@ exports.register = function(server, options, next) {
         if (failedRequestPercent > options.failedRequestThreshold) {
           server.log(['ops', 'requests', 'threshold', 'warning'], `${failedRequestPercent}% of http requests have returned a non-200 code`);
         }
-        if (requestData.avgResponseTime > options.avgResponseTimeThreshold) {
-          server.log(['ops', 'memory', 'warning', 'threshold'], `Average response time is ${requestData.avgResponseTime}ms. Exceeds threshold of ${options.avgResponseTimeThreshold}ms`);
+        if (data.responseTimes && data.responseTimes[port]) {
+          requestData.avgResponseTime = data.responseTimes[port].avg;
+          requestData.maxResponseTime = data.responseTimes[port].max;
+          if (requestData.avgResponseTime > options.avgResponseTimeThreshold) {
+            server.log(['ops', 'memory', 'warning', 'threshold'], `Average response time is ${requestData.avgResponseTime}ms. Exceeds threshold of ${options.avgResponseTimeThreshold}ms`);
+          }
+        } else {
+          server.log(['ops', 'requests', 'error'], `Unable to get response time data for port ${port}`);
         }
       }
     }
