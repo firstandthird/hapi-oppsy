@@ -60,6 +60,9 @@ exports.register = function(server, options, next) {
         let totalRequestsProcessed = 0;
         let totalErrorRequests = 0;
         const requestData = data.requests[port];
+        if (!requestData) {
+          server.log(['ops', 'requests', 'error'], `Unable to get request data for port ${port}`);
+        }
         requestData.avgResponseTime = data.responseTimes[port].avg;
         requestData.maxResponseTime = data.responseTimes[port].max;
         if (options.logRequests === 'info') {
