@@ -36,6 +36,27 @@ server.register([
       reply('hi');
     }
   });
+  server.route({
+    path: '/redirect',
+    method: 'GET',
+    handler(req, reply) {
+      reply.redirect('https://google.com');
+    }
+  });
+  server.route({
+    path: '/401',
+    method: 'GET',
+    handler(req, reply) {
+      reply('oops').code(401);
+    }
+  });
+  server.route({
+    path: '/500',
+    method: 'GET',
+    handler(req, reply) {
+      reply('oops').code(500);
+    }
+  });
   server.start(() => {
     // try hitting the '/' route as well as an undefined route to see request data
     // for both successful and failed HTTP transactions

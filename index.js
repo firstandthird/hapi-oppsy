@@ -67,7 +67,7 @@ exports.register = function(server, options, next) {
         }
         totalRequestsProcessed += requestData.total;
         Object.keys(requestData.statusCodes).forEach((code) => {
-          if (code !== '200') {
+          if (parseInt(code, 10) >= 400) {
             totalErrorRequests += requestData.statusCodes[code];
           }
         });
