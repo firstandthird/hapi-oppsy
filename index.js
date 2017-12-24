@@ -77,7 +77,7 @@ const register = function(server, options) {
           server.log(['ops', 'requests', 'threshold', 'warning'], `${failedRequestPercent}% of http requests have returned a non-200 code`);
         }
         if (requestData.avgResponseTime > options.avgResponseTimeThreshold) {
-          server.log(['ops', 'memory', 'warning', 'threshold'], `Average response time is ${requestData.avgResponseTime}ms. Exceeds threshold of ${options.avgResponseTimeThreshold}ms`);
+          server.log(['ops', 'requests', 'threshold', 'warning'], `Average response time is ${requestData.avgResponseTime}ms. Exceeds threshold of ${options.avgResponseTimeThreshold}ms`);
         }
       }
     }

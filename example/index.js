@@ -40,7 +40,7 @@ const startExampleServer = async function() {
     path: '/redirect',
     method: 'GET',
     handler(req, h) {
-      h.redirect('https://google.com');
+      return h.redirect('https://google.com');
     }
   });
 
