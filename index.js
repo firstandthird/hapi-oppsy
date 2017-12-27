@@ -1,4 +1,3 @@
-'use strict';
 const Oppsy = require('oppsy');
 
 const defaults = {
@@ -13,10 +12,12 @@ const defaults = {
   cpuThresholds: [1.0, 1.0, 1.0] // 1, 5 and 15-minute load averages
 };
 
-exports.register = function(server, options, next) {
+const register = function(server, options) {
   const port = server.info.port;
-  options = Object.assign({}, defaults, options);
   const oppsy = new Oppsy(server);
+
+  options = Object.assign({}, defaults, options);
+
   oppsy.on('ops', (data) => {
     if (options.logMemory) {
       const freeMb = data.osmem.free / 1048576;
@@ -76,19 +77,25 @@ exports.register = function(server, options, next) {
           server.log(['ops', 'requests', 'threshold', 'warning'], `${failedRequestPercent}% of http requests have returned a non-200 code`);
         }
         if (requestData.avgResponseTime > options.avgResponseTimeThreshold) {
-          server.log(['ops', 'memory', 'warning', 'threshold'], `Average response time is ${requestData.avgResponseTime}ms. Exceeds threshold of ${options.avgResponseTimeThreshold}ms`);
+          server.log(['ops', 'requests', 'threshold', 'warning'], `Average response time is ${requestData.avgResponseTime}ms. Exceeds threshold of ${options.avgResponseTimeThreshold}ms`);
         }
       }
     }
   });
+
   server.expose('oppsy', oppsy);
-  server.ext('onPostStart', (server2, next2) => {
-    oppsy.start(options.interval);
-    next2();
+
+  server.ext({
+    type: 'onPostStart',
+    method: () => {
+      oppsy.start(options.interval);
+    }
   });
-  next();
 };
 
-exports.register.attributes = {
+exports.plugin = {
+  name: 'hapi-oppsy',
+  register,
+  once: true,
   pkg: require('./package.json')
 };

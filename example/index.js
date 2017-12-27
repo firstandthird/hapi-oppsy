@@ -1,23 +1,22 @@
 const Hapi = require('hapi');
 const oppsyPlugin = require('../');
-const hapiLogr = require('hapi-logr');
-const logrFlat = require('logr-flat');
 
-const server = new Hapi.Server({ });
-server.connection({ port: 8080 });
-server.register([
-  {
-    register: hapiLogr,
+const startExampleServer = async function() {
+  const server = new Hapi.Server({ port: 3000 });
+
+  await server.register({
+    plugin: require('hapi-logr'),
     options: {
       reporters: {
         flat: {
-          reporter: logrFlat,
+          reporter: require('logr-flat'),
         }
       }
     }
-  },
-  {
-    register: oppsyPlugin,
+  });
+
+  await server.register({
+    plugin: oppsyPlugin,
     options: {
       logRequests: 'info',
       avgResponseTimeThreshold: 5,
@@ -27,38 +26,48 @@ server.register([
       cpuThresholds: [0.5, 0.4, 0.3], // alert if 1/5/15 minute CPU averages are above their respective threshold
       failedRequestThreshold: 10 // alert if the % of requests that don't return 200 is above this threshold
     }
-  }
-], () => {
+  });
+
   server.route({
     path: '/',
     method: 'GET',
-    handler(req, reply) {
-      reply('hi');
+    handler(req, h) {
+      return 'hi';
     }
   });
+
   server.route({
     path: '/redirect',
     method: 'GET',
-    handler(req, reply) {
-      reply.redirect('https://google.com');
+    handler(req, h) {
+      return h.redirect('https://google.com');
     }
   });
+
   server.route({
     path: '/401',
     method: 'GET',
-    handler(req, reply) {
-      reply('oops').code(401);
+    handler(req, h) {
+      const response = h.response('oops');
+      response.statusCode = 401;
+
+      return response;
     }
   });
+
   server.route({
     path: '/500',
     method: 'GET',
-    handler(req, reply) {
-      reply('oops').code(500);
+    handler(req, h) {
+      const response = h.response('oops');
+      response.statusCode = 500;
+
+      return response;
     }
   });
-  server.start(() => {
-    // try hitting the '/' route as well as an undefined route to see request data
-    // for both successful and failed HTTP transactions
-  });
-});
+
+  await server.start();
+  console.log(`Server running at: ${server.info.uri}`);
+};
+
+startExampleServer();

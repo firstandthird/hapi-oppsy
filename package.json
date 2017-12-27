@@ -3,8 +3,11 @@
   "version": "1.1.1",
   "description": "Hapi plugin for oppsy",
   "main": "index.js",
+  "engine": {
+    "node": ">=8.0.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "lab --leaks -t 100 -e test ",
     "example": "node example/index.js"
   },
   "repository": {
@@ -24,17 +27,19 @@
   },
   "homepage": "https://github.com/firstandthird/hapi-oppsy#readme",
   "dependencies": {
-    "oppsy": "1.0.2"
+    "oppsy": "^2.0.0"
   },
   "eslintConfig": {
     "extends": "firstandthird"
   },
   "devDependencies": {
-    "eslint": "^3.9.1",
-    "eslint-config-firstandthird": "^3.2.0",
+    "eslint": "^4.13.1",
+    "eslint-config-firstandthird": "^4.3.0",
     "eslint-plugin-import": "^2.1.0",
-    "hapi": "^16.1.1",
-    "hapi-logr": "^3.0.0",
-    "logr-flat": "^2.0.0"
+    "hapi": "^17.2.0",
+    "hapi-logr": "^4.0.0",
+    "logr-flat": "^3.0.0",
+    "lab": "^15.1.2",
+    "code": "^5.1.2"
   }
 }
