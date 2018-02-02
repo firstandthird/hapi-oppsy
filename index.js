@@ -61,8 +61,10 @@ const register = function(server, options) {
         let totalRequestsProcessed = 0;
         let totalErrorRequests = 0;
         const requestData = data.requests[port];
-        requestData.avgResponseTime = data.responseTimes[port].avg;
-        requestData.maxResponseTime = data.responseTimes[port].max;
+        if (data.responseTimes[port]) {
+          requestData.avgResponseTime = data.responseTimes[port].avg;
+          requestData.maxResponseTime = data.responseTimes[port].max;
+        }
         if (options.logRequests === 'info') {
           server.log(['ops', 'requests'], requestData);
         }

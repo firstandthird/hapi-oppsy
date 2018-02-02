@@ -39,8 +39,8 @@ lab.test('logs memory', { timeout: 200 }, async () => {
 
   await server.start();
 
-  await new Promise(resolve => setTimeout(resolve, 100));
-  code.expect(logs.length).to.be.above(1);
+  await new Promise(resolve => setTimeout(resolve, 75));
+  code.expect(logs.length).to.at.least(1);
 });
 
 lab.test('warns if memory over threeshold', { timeout: 200 }, async () => {
@@ -141,7 +141,7 @@ lab.test('logs cpu', { timeout: 200 }, async () => {
   await server.start();
 
   await new Promise(resolve => setTimeout(resolve, 100));
-  code.expect(logs.length).to.be.above(1);
+  code.expect(logs.length).to.be.at.least(1);
 });
 
 lab.test('can disable cpu logging', { timeout: 200 }, async () => {
@@ -275,6 +275,39 @@ lab.test('logs slow requests', { timeout: 1000 }, async () => {
 
   await new Promise(resolve => setTimeout(resolve, 100));
   code.expect(logs.length).to.be.above(0);
+});
+
+lab.test('handles requests logging with long first request', { timeout: 500 }, async () => {
+  const logs = [];
+
+  server.events.on('log', (logObj) => {
+    logs.push(logObj);
+  });
+
+  await server.register({
+    plugin: hapiOppsy,
+    options: {
+      interval: 60,
+      logCpu: false,
+      logMemory: false,
+      logRequests: 'info'
+    }
+  });
+
+  server.route({
+    method: 'get',
+    path: '/',
+    handler: async () => {
+      await new Promise(resolve => setTimeout(resolve, 300));
+      return 'ok'
+    }
+  });
+
+  await server.start();
+  await server.inject({ method: 'get', url: '/' });
+
+  await new Promise(resolve => setTimeout(resolve, 100));
+  code.expect(logs.length).to.be.at.least(1);
 });
 
 lab.test('handles requests logging with no requests made', { timeout: 200 }, async () => {
