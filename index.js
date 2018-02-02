@@ -57,7 +57,7 @@ const register = function(server, options) {
     if (options.logRequests) {
       // server.log request info:
       // track % of requests that were not HTTP OK:
-      if (data.requests[port] !== undefined && data.requests[port].total !== 0) {
+      if (data.requests[port] !== undefined && data.requests[port].total !== 0 && data.responseTimes[port]) {
         let totalRequestsProcessed = 0;
         let totalErrorRequests = 0;
         const requestData = data.requests[port];
