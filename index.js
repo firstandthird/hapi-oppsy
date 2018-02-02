@@ -57,12 +57,14 @@ const register = function(server, options) {
     if (options.logRequests) {
       // server.log request info:
       // track % of requests that were not HTTP OK:
-      if (data.requests[port] !== undefined && data.requests[port].total !== 0 && data.responseTimes[port]) {
+      if (data.requests[port] !== undefined && data.requests[port].total !== 0) {
         let totalRequestsProcessed = 0;
         let totalErrorRequests = 0;
         const requestData = data.requests[port];
-        requestData.avgResponseTime = data.responseTimes[port].avg;
-        requestData.maxResponseTime = data.responseTimes[port].max;
+        if (data.responseTimes[port]) {
+          requestData.avgResponseTime = data.responseTimes[port].avg;
+          requestData.maxResponseTime = data.responseTimes[port].max;
+        }
         if (options.logRequests === 'info') {
           server.log(['ops', 'requests'], requestData);
         }
