@@ -93,6 +93,8 @@ const register = function(server, options) {
       oppsy.start(options.interval);
     }
   });
+
+  server.events.on('stop', () => oppsy.stop());
 };
 
 exports.plugin = {
