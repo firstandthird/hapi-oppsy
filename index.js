@@ -43,14 +43,11 @@ const register = function(server, options) {
           '15-minute': data.osload[2].toFixed(3)
         });
       }
-      // warn if any of the CPU load averages exceeds the expected threshold:
-      for (let i = 0; i < 3; i++) {
-        const cpuLabel = ['1-minute', '5-minute', '15-minute'][i];
-        const cpuThreshold = options.cpuThresholds[i];
-        const cpuAvg = data.osload[i];
-        if (cpuAvg > cpuThreshold) {
-          server.log(['ops', 'cpu', 'warning', 'threshold'], `Average ${cpuLabel} CPU load of ${cpuAvg} exceeds threshold of ${cpuThreshold}`);
-        }
+      // warn if the 1-minute CPU load averages exceeds the expected threshold:
+      const cpuThreshold = options.cpuThresholds[0];
+      const cpuAvg = data.osload[0];
+      if (cpuAvg > cpuThreshold) {
+        server.log(['ops', 'cpu', 'warning', 'threshold'], `Average 1-minute CPU load of ${cpuAvg} exceeds threshold of ${cpuThreshold}`);
       }
     }
 
